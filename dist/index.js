@@ -592,10 +592,12 @@ function run() {
     return main_awaiter(this, void 0, void 0, function* () {
         try {
             const { pathToPackage } = yield context.getInputs();
-            if (pathToPackage !== '.')
+            if (pathToPackage !== '.') {
                 process.chdir(pathToPackage);
-            core.info(`Using ${pathToPackage} as working directory...`);
-            console.log(process.env.GITHUB_EVENT_PATH ? __nccwpck_require__(875)(process.env.GITHUB_EVENT_PATH) : {});
+                core.info(`Using ${pathToPackage} as working directory...`);
+            }
+            console.log('process.env.GITHUB_EVENT_PATH', process.env.GITHUB_EVENT_PATH);
+            // console.log(process.env.GITHUB_EVENT_PATH ? require(process.env.GITHUB_EVENT_PATH) : {});
             const currentVersion = utils.getPackage(pathToPackage).version;
             // Get last commit of current ref.
         }

@@ -6,10 +6,13 @@ async function run(): Promise<void> {
   try {
     const { pathToPackage } = await context.getInputs();
 
-    if (pathToPackage !== '.') process.chdir(pathToPackage);
-    core.info(`Using ${pathToPackage} as working directory...`);
+    if (pathToPackage !== '.') {
+      process.chdir(pathToPackage);
+      core.info(`Using ${pathToPackage} as working directory...`);
+    }
 
-    console.log(process.env.GITHUB_EVENT_PATH ? require(process.env.GITHUB_EVENT_PATH) : {});
+    console.log('process.env.GITHUB_EVENT_PATH', process.env.GITHUB_EVENT_PATH);
+    // console.log(process.env.GITHUB_EVENT_PATH ? require(process.env.GITHUB_EVENT_PATH) : {});
 
     const currentVersion = helpers.getPackage(pathToPackage).version;
 
