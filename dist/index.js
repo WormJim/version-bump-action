@@ -6260,8 +6260,10 @@ function run() {
             const { token, pathToPackage } = yield context.getInputs();
             if (github.context.eventName === 'push') {
                 const pushPayload = github.context.payload;
-                console.log('github.context', github.context);
-                core.info(`The head commit is: ${pushPayload.head}`);
+                console.log('pushPayload', pushPayload);
+                console.log('payload commits', pushPayload.commits);
+                console.log('payload head_commits message', pushPayload.head_commits.message);
+                core.info(`The head commit is: ${pushPayload.head_commits}`);
             }
             // const kit = github.getOctokit(token);
             if (pathToPackage !== '.') {
