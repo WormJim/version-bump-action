@@ -6260,6 +6260,7 @@ function run() {
             const { token, pathToPackage } = yield context.getInputs();
             if (github.context.eventName === 'push') {
                 const pushPayload = github.context.payload;
+                console.log('github.context', github.context);
                 core.info(`The head commit is: ${pushPayload.head}`);
             }
             // const kit = github.getOctokit(token);

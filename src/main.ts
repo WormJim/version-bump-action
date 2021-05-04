@@ -10,6 +10,7 @@ async function run(): Promise<void> {
 
     if (github.context.eventName === 'push') {
       const pushPayload = github.context.payload;
+      console.log('github.context', github.context);
       core.info(`The head commit is: ${pushPayload.head}`);
     }
 
