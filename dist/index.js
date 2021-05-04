@@ -519,7 +519,6 @@ __nccwpck_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
 var core = __nccwpck_require__(186);
-var core_default = /*#__PURE__*/__nccwpck_require__.n(core);
 ;// CONCATENATED MODULE: ./src/context.ts
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -533,9 +532,9 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 const getInputs = () => __awaiter(void 0, void 0, void 0, function* () {
     return {
-        commitMessage: 'ci: Bump version to {{version}}' || 0 || 0,
-        pathToPackage: '.' || 0 || 0,
-        tag:  true || 0,
+        commitMessage: core.getInput('commit-message') || 'ci: Bump version to {{version}}',
+        pathToPackage: core.getInput('path-to-package') || '.',
+        tag: /true/i.test(core.getInput('tag')),
     };
 });
 /* harmony default export */ const context = ({
@@ -595,13 +594,13 @@ function run() {
             const { pathToPackage } = yield context.getInputs();
             if (pathToPackage !== '.')
                 process.chdir(pathToPackage);
-            core_default().info(`Using ${pathToPackage} as working directory...`);
+            core.info(`Using ${pathToPackage} as working directory...`);
             console.log(process.env.GITHUB_EVENT_PATH ? __nccwpck_require__(875)(process.env.GITHUB_EVENT_PATH) : {});
             const currentVersion = utils.getPackage(pathToPackage).version;
             // Get last commit of current ref.
         }
         catch (error) {
-            core_default().setFailed(error.message);
+            core.setFailed(error.message);
         }
     });
 }
