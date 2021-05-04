@@ -1,0 +1,24 @@
+name: version-bump-action
+description: bump release version
+
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
+  post: 'dist/index.js'
+
+branding:
+  icon: activity
+  color: blue
+
+inputs: 
+  commit-message: 
+    description: Set the commit message for the version bump
+    default: 'Bump Version to {{version}}'
+    required: false
+  tag:
+    description: If true (default false) a version tag is pushed
+    required: false
+  path-to-package: 
+    description: The path to the repositories package.json
+    default: .
+    required: false 
