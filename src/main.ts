@@ -1,18 +1,24 @@
 import * as core from '@actions/core';
+import * as github from '@actions/github';
+import * as Webhooks from '@octokit/webhooks';
 import context from './context';
 import helpers from './utils';
 
 async function run(): Promise<void> {
   try {
-    const { pathToPackage } = await context.getInputs();
+    const { token, pathToPackage } = await context.getInputs();
+
+    if (github.context.eventName === 'push') {
+      const pushPayload = github.context.payload;
+      core.info(`The head commit is: ${pushPayload.head}`);
+    }
+
+    // const kit = github.getOctokit(token);
 
     if (pathToPackage !== '.') {
       process.chdir(pathToPackage);
       core.info(`Using ${pathToPackage} as working directory...`);
     }
-
-    console.log('process.env.GITHUB_EVENT_PATH', process.env.GITHUB_EVENT_PATH);
-    // console.log(process.env.GITHUB_EVENT_PATH ? require(process.env.GITHUB_EVENT_PATH) : {});
 
     const currentVersion = helpers.getPackage(pathToPackage).version;
 

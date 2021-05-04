@@ -11,14 +11,18 @@ branding:
   color: blue
 
 inputs: 
+  token: 
+    description: Github Public Access Token
+    required: true
   commit-message: 
     description: Set the commit message for the version bump
     default: 'Bump Version to {{version}}'
     required: false
   tag:
     description: If true (default false) a version tag is pushed
+    default: 'false'
     required: false
   path-to-package: 
     description: The path to the repositories package.json
-    default: .
+    default: '.'
     required: false 
