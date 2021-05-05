@@ -51,8 +51,14 @@ async function run(): Promise<void> {
     if (npmVersion.success) core.info(`Bumped Runner Package version: from ${pkgVersion} to ${npmVersion.stdout.slice(1)}`);
 
     // Set up git config for user name and user email
-    // Commit to action the version bump on package.json
-    // Commit to Repo the version bump on package.json
+
+    // Commit the version bump on package.json
+    const commited = await exec('git', ['commit', '-a', '-m', inputs.commitMessage.replace(/{{version}}/g, npmVersion.stdout)]);
+    if (commited.success) {
+      core.info(`Successful pushed commit "${inputs.commitMessage.replace(/{{version}}/g, npmVersion.stdout)}" to branch ${inputs.ref.toUpperCase()}`);
+    }
+
+    // Push Tag if Tag True
   } catch (error) {
     core.setFailed(error.message);
   }
