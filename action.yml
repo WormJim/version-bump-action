@@ -18,11 +18,23 @@ inputs:
     description: Set the commit message for the version bump
     default: 'Bump Version to {{version}}'
     required: false
+  path-to-package: 
+    description: The path to the repositories package.json
+    default: '.'
+    required: false
   tag:
     description: If true (default false) a version tag is pushed
     default: 'false'
     required: false
-  path-to-package: 
-    description: The path to the repositories package.json
-    default: '.'
-    required: false 
+  major: 
+    description: (Optional) Phrases to test head commit against. These phrases will extend the default major phrases. The phrases must be a single string delimited by a ','.
+    default: 'BREAKING CHANGE,major'
+    required: false
+  minor: 
+    description: (Optional) Phrases to test head commit against. These phrases will extend the default minor phrases. The phrases must be a single string delimited by a ','.
+    default: 'feature,minor'
+    required: false
+  patch: 
+    description: (Optional) Phrases to test head commit against. The phrases must be a single string delimited by a ','. Patch is the default version bump action for most commits.
+    default: undefined
+    required: false
