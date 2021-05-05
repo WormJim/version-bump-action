@@ -46,7 +46,7 @@ async function run(): Promise<void> {
     core.info(`Current Version is: ${pkgVersion}`);
 
     // Bump Runner Package Json
-    const npmVersion = await exec('npm', ['version', '--allow-same-version=true', '--git-tag-version=false', kit.bumpVersion]);
+    const npmVersion = await exec('npm', ['version', '--allow-same-version=true', `--git-tag-version=${inputs.tag}`, kit.bumpVersion]);
     // if(npmVersion.stderr) throw npmVersion.stderr;
     if (npmVersion.success) core.info(`Bumped Runner Package version: from ${pkgVersion} to ${npmVersion.stdout.slice(1)}`);
 
