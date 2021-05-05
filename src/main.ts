@@ -40,6 +40,7 @@ async function run(): Promise<void> {
     const { success, stdout: runnerVersion } = await exec('npm', ['version', '--allow-same-version=true', '--git-tag-version=false', kit.bumpVersion]);
     if (success) core.info(`Bumped Runner Package version: from ${pkgVersion} to ${runnerVersion.slice(1)}`);
 
+    // Set up git config for user name and user email
     // Commit to action the version bump on package.json
     // Commit to Repo the version bump on package.json
   } catch (error) {
