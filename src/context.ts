@@ -8,6 +8,7 @@ export interface Inputs {
   minor: string[];
   major: string[];
   patch: string[] | undefined;
+  ref: string | undefined;
 }
 
 export const getInputs = async (): Promise<Inputs> => {
@@ -26,6 +27,7 @@ export const getInputs = async (): Promise<Inputs> => {
     minor: (core.getInput('minor').length && [...defaults.minor, ...core.getInput('minor').split(',')]) || defaults.minor,
     patch: (core.getInput('patch').length && core.getInput('patch').split(',')) || undefined,
     tag: /true/i.test(core.getInput('tag')),
+    ref: core.getInput('ref'),
   };
 };
 

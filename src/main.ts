@@ -10,6 +10,15 @@ async function run(): Promise<void> {
     const inputs = await context.getInputs();
     const kit = new Versioned(inputs);
 
+    // Guard against unwanted branch pushs.
+    if (inputs.ref) {
+      const { stdout: branch } = await exec('git', ['branch', '--show-current']);
+      if (branch !== inputs.ref?.split('/').pop()) {
+        core.info('Current Ref does not match desired branch');
+        return;
+      }
+    }
+
     core.info(`Head Commit is: "${kit.headCommit}"`);
     if (kit.headIsBump) {
       // If this actions version bump commit activates a workflow
@@ -37,8 +46,9 @@ async function run(): Promise<void> {
     core.info(`Current Version is: ${pkgVersion}`);
 
     // Bump Runner Package Json
-    const { success, stdout: runnerVersion } = await exec('npm', ['version', '--allow-same-version=true', '--git-tag-version=false', kit.bumpVersion]);
-    if (success) core.info(`Bumped Runner Package version: from ${pkgVersion} to ${runnerVersion.slice(1)}`);
+    const npmVersion = await exec('npm', ['version', '--allow-same-version=true', '--git-tag-version=false', kit.bumpVersion]);
+    // if(npmVersion.stderr) throw npmVersion.stderr;
+    if (npmVersion.success) core.info(`Bumped Runner Package version: from ${pkgVersion} to ${npmVersion.stdout.slice(1)}`);
 
     // Set up git config for user name and user email
     // Commit to action the version bump on package.json

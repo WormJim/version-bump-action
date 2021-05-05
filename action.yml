@@ -15,15 +15,15 @@ inputs:
     description: Github Public Access Token
     required: true
   commit-message: 
-    description: Set the commit message for the version bump
+    description: (Optional) Set the commit message for the version bump
     default: 'Bump Version to {{version}}'
     required: false
   path-to-package: 
-    description: The path to the repositories package.json
+    description: (Optional) The path to the repositories package.json in the current Github Runner
     default: '.'
     required: false
   tag:
-    description: If true (default false) a version tag is pushed
+    description: (Optional) If true (default false) a version tag is pushed
     default: 'false'
     required: false
   major: 
@@ -37,4 +37,8 @@ inputs:
   patch: 
     description: (Optional) Phrases to test head commit against. The phrases must be a single string delimited by a ','. Patch is the default version bump action for most commits.
     default: undefined
+    required: false
+  ref: 
+    description: (Optional) The target branch to push the version bump commit to.
+    default: Most likely refs/heads/main. This comes from action/checkout when setting up your job.
     required: false
