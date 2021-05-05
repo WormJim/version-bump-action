@@ -2,7 +2,7 @@
   "name": "version-bump",
   "private": true,
   "main": "index.js",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "scripts": {
     "start": "nodemon src/main.ts",
     "build": "ncc build src/main.ts -o dist",

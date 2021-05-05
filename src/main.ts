@@ -58,6 +58,14 @@ async function run(): Promise<void> {
       core.info(`Successful pushed commit "${inputs.commitMessage.replace(/{{version}}/g, npmVersion.stdout)}" to branch ${inputs.ref.toUpperCase()}`);
     }
 
+    // Push Commit Up To Remote Server
+    const remoteRepo = `https://${process.env.GITHUB_ACTOR}:${process.env.GITHUB_TOKEN}@github.com/${process.env.GITHUB_REPOSITORY}.git`;
+
+    const push = await exec('git', ['push', '-a', '-m', inputs.commitMessage.replace(/{{version}}/g, npmVersion.stdout)]);
+    if (commited.success) {
+      core.info(`Successful pushed commit "${inputs.commitMessage.replace(/{{version}}/g, npmVersion.stdout)}" to branch ${inputs.ref.toUpperCase()}`);
+    }
+
     // Push Tag if Tag True
   } catch (error) {
     core.setFailed(error.message);
