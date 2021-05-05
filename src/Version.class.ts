@@ -23,6 +23,7 @@ export default class Versioned {
   private _minorPhrases;
   private _patchPhrases;
   private _headCommit;
+  private _payload;
 
   // Public Vars
   public commitMessage: string;
@@ -43,6 +44,7 @@ export default class Versioned {
     this._patchPhrases = patch;
 
     const payload = github.context.payload || {};
+    this._payload = payload;
     this._headCommit = payload?.head_commit.message || '';
 
     this._bump = this._bumpVersion();

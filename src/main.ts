@@ -55,14 +55,14 @@ async function run(): Promise<void> {
     // Commit the version bump on package.json
     const commited = await exec('git', ['commit', '-a', '-m', inputs.commitMessage.replace(/{{version}}/g, npmVersion.stdout)]);
     if (commited.success) {
-      core.info(`Successful pushed commit "${inputs.commitMessage.replace(/{{version}}/g, npmVersion.stdout)}" to branch ${inputs.ref.toUpperCase()}`);
+      core.info(`Successful commit: "${inputs.commitMessage.replace(/{{version}}/g, npmVersion.stdout)}" to branch ${inputs.ref.toUpperCase()}`);
     }
 
     // Push Commit Up To Remote Server
     const remoteRepo = `https://${process.env.GITHUB_ACTOR}:${inputs.token}@github.com/${process.env.GITHUB_REPOSITORY}.git`;
 
-    const push = await exec('git', ['push', '-a', '-m', inputs.commitMessage.replace(/{{version}}/g, npmVersion.stdout)]);
-    if (commited.success) {
+    const push = await exec('git', ['push', remoteRepo]);
+    if (push.success) {
       core.info(`Successful pushed commit "${inputs.commitMessage.replace(/{{version}}/g, npmVersion.stdout)}" to branch ${inputs.ref.toUpperCase()}`);
     }
 
