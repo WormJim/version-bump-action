@@ -1,2 +1,5 @@
 node_modules
 .gitCredentials
+nodemon.json
+event.json
+original.js
