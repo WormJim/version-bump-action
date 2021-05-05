@@ -1,4 +1,4 @@
-import actionsExec from '@actions/exec';
+import * as actionsExec from '@actions/exec';
 import { ExecOptions } from '@actions/exec';
 
 export interface ExecResult {
@@ -7,7 +7,7 @@ export interface ExecResult {
   stderr: string;
 }
 
-const exec = async (command: string, args: string[] = [], silent: boolean): Promise<ExecResult> => {
+const exec = async (command: string, args: string[] = [], silent: boolean = true): Promise<ExecResult> => {
   let stdout: string = '';
   let stderr: string = '';
 
