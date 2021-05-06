@@ -49,6 +49,7 @@ async function run(): Promise<void> {
     // Bump Runner Package Json
     const version = await npm(['version', '--allow-same-version=false', `--git-tag-version=${inputs.tag}`, kit.bumpVersion]);
     core.info(`Bumped Runner Package version: from ${pkg.version} to ${version.slice(1)}`);
+
     core.setOutput('version', version);
 
     //TODO: Set up git config for user name and user email
