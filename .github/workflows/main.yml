@@ -22,14 +22,13 @@ jobs:
 
       - name: "cat package.json"
         run: cat ./package.json
-        
+
       - name: "Bump Version"
         id: version-bump
         uses: WormJim/version-bump-action@main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: Bump version to {{verison}}
-          path-to-package: "."
           patch: Patch, Fix
           minor: Feature, Feat, feat
 

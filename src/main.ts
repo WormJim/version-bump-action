@@ -35,10 +35,10 @@ async function run(): Promise<void> {
 
     core.info(`Version type to bump: ${kit.bumpVersion.toUpperCase()}`);
 
-    if (inputs.pathToPackage !== '.') {
-      process.chdir(inputs.pathToPackage);
-      core.info(`Using ${inputs.pathToPackage} as working directory...`);
-    }
+    // if (inputs.pathToPackage !== '.') {
+    //   process.chdir(inputs.pathToPackage);
+    //   core.info(`Using ${inputs.pathToPackage} as working directory...`);
+    // }
 
     // Resolve Current Release Version From Package Json
     const pkgVersion = (await getPackage(inputs.pathToPackage)).version.toString();
