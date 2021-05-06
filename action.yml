@@ -36,7 +36,7 @@ inputs:
     required: false
   patch: 
     description: (Optional) Phrases to test head commit against. The phrases must be a single string delimited by a ','. Patch is the default version bump action for most commits.
-    default: undefined
+    default: ''
     required: false
   ref: 
     description: (Optional) The target branch to push the version bump commit to.
