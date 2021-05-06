@@ -36,16 +36,18 @@ async function run(): Promise<void> {
 
     core.info(`Version type to bump: ${kit.bumpVersion.toUpperCase()}`);
 
-    // if (inputs.pathToPackage !== '.') {
-    //   process.chdir(inputs.pathToPackage);
-    //   core.info(`Using ${inputs.pathToPackage} as working directory...`);
-    // }
+    if (inputs.pathToPackage !== '.') {
+      core.info(`Current Working Directory is ${process.cwd()}`);
+      process.chdir(inputs.pathToPackage);
+      core.info(`Updated Working Directory is ${process.cwd()}`);
+      core.info(`Using ${inputs.pathToPackage} as working directory...`);
+    }
 
     // Resolve Current Release Version From Package Json
     // const pkgVersion = (await getPackage(inputs.pathToPackage)).version.toString();
     // console.log(`core.getInput('path-to-package')`, core.getInput('path-to-package'));
-    console.log('Resolved Path: ', path.resolve(__dirname, 'package.json'));
-    const { version: pkgVersion } = await import(path.resolve(__dirname, 'package.json'));
+    console.log('Resolved Path: ', path.join(inputs.pathToPackage, 'package.json'));
+    const { version: pkgVersion } = await import(path.join(inputs.pathToPackage, 'package.json'));
     core.info(`Current Version is: ${pkgVersion}`);
 
     // Bump Runner Package Json
