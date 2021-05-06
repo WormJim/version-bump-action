@@ -5,8 +5,8 @@
   "version": "0.0.8",
   "scripts": {
     "start": "nodemon src/main.ts",
-    "build": "ncc build src/main.ts -o dist",
-    "test": "jest"
+    "build": "ncc build src/main.ts",
+    "test": "jest --coverage"
   },
   "dependencies": {
     "@actions/core": "^1.2.7",
