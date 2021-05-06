@@ -52,7 +52,10 @@ export default class Versioned {
 
   // Public Methods
   public majorMatch = () => commitWordMatch(this._majorPhrases, /^([a-zA-Z]+)(\(.+\))?(\!)\:/);
-  public minorMatch = () => commitWordMatch(this._minorPhrases);
+  public minorMatch = () => {
+    console.log('Minor Phrases: ', this._minorPhrases);
+    return commitWordMatch(this._minorPhrases);
+  };
   public patchMatch = () => commitWordMatch(this._patchPhrases || []);
 
   // Accessor
