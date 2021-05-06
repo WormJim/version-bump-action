@@ -45,7 +45,7 @@ async function run(): Promise<void> {
     }
 
     // Resolve Current Release Version From Package Json
-    const pkg = JSON.parse(fs.readFileSync(path.join(inputs.pathToPackage, './package.json'), 'utf-8'));
+    const pkg = getPackage(inputs.pathToPackage);
     core.info(`Current Version is: ${pkg.version}`);
 
     // Bump Runner Package Json
