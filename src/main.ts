@@ -25,7 +25,7 @@ async function run(): Promise<void> {
       // which calls this action again with the original action bump commit message
       // Ex ci: Bump version to v1.0.1
       // ignore the bump
-      core.info('No bump required!');
+      core.info('Head commit is a bump commit. No bump required!');
       return;
     }
 
@@ -46,11 +46,10 @@ async function run(): Promise<void> {
     core.info(`Current Version is: ${pkgVersion}`);
 
     // Bump Runner Package Json
-    const npmVersion = await exec('npm', ['version', '--allow-same-version=true', `--git-tag-version=${inputs.tag}`, kit.bumpVersion]);
-    // if(npmVersion.stderr) throw npmVersion.stderr;
+    const npmVersion = await exec('npm', ['version', '--allow-same-version=false', `--git-tag-version=${inputs.tag}`, kit.bumpVersion]);
     if (npmVersion.success) core.info(`Bumped Runner Package version: from ${pkgVersion} to ${npmVersion.stdout.slice(1)}`);
 
-    // Set up git config for user name and user email
+    //TODO: Set up git config for user name and user email
 
     // Commit the version bump on package.json
     const commited = await exec('git', ['commit', '-a', '-m', inputs.commitMessage.replace(/{{version}}/g, npmVersion.stdout)]);
@@ -61,12 +60,10 @@ async function run(): Promise<void> {
     // Push Commit Up To Remote Server
     const remoteRepo = `https://${process.env.GITHUB_ACTOR}:${inputs.token}@github.com/${process.env.GITHUB_REPOSITORY}.git`;
 
-    const push = await exec('git', ['push', remoteRepo]);
+    const push = await exec('git', ['push', '--follow-tags', remoteRepo]);
     if (push.success) {
-      core.info(`Successful pushed commit "${inputs.commitMessage.replace(/{{version}}/g, npmVersion.stdout)}" to branch ${inputs.ref.toUpperCase()}`);
+      core.info(`Successful push: "${inputs.commitMessage.replace(/{{version}}/g, npmVersion.stdout)}" to branch ${inputs.ref.toUpperCase()}`);
     }
-
-    // Push Tag if Tag True
   } catch (error) {
     core.setFailed(error.message);
   }
