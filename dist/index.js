@@ -7456,7 +7456,7 @@ var utils_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _ar
 
 
 const getPackage = (workspace) => {
-    const pathToPackage = external_path_.resolve('../', 'package.json');
+    const pathToPackage = external_path_.join(process.env.GITHUB_WORKSPACE, 'package.json');
     if (!external_fs_.existsSync(pathToPackage))
         throw new Error(`${pathToPackage} could not be found in your project's root.`);
     return __nccwpck_require__(875)(pathToPackage);
