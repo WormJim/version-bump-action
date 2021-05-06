@@ -13,3 +13,7 @@ original.js
 
 # Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release
+
+# Coverage directory used by tools like istanbul
+/coverage
+*.lcov
