@@ -7367,6 +7367,7 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 };
 
 const getInputs = () => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b;
     const defaults = {
         commitMessage: 'ci: Bump version to {{version}}',
         pathToPackage: '.',
@@ -7382,7 +7383,7 @@ const getInputs = () => __awaiter(void 0, void 0, void 0, function* () {
         minor: (core.getInput('minor').length && [...defaults.minor, ...core.getInput('minor').split(',')]) || defaults.minor,
         patch: (core.getInput('patch').length && core.getInput('patch').split(',')) || undefined,
         tag: /true/i.test(core.getInput('tag')),
-        ref: core.getInput('ref').split('/').pop() || defaults.ref,
+        ref: ((_b = (_a = core.getInput('ref')) === null || _a === void 0 ? void 0 : _a.split('/')) === null || _b === void 0 ? void 0 : _b.pop()) || defaults.ref,
     };
 });
 /* harmony default export */ const context = ({
@@ -7536,8 +7537,7 @@ function run() {
             const branches = yield src_exec('git', ['branch', '--show-current']);
             if (branches.success) {
                 if (branches.stdout !== inputs.ref) {
-                    core.info(`Ref (${(_a = process.env.GITHUB_REF) === null || _a === void 0 ? void 0 : _a.split('/').pop()}) does not match branch (${inputs.ref})`);
-                    return;
+                    throw `Ref (${(_a = process.env.GITHUB_REF) === null || _a === void 0 ? void 0 : _a.split('/').pop()}) does not match branch (${inputs.ref})`;
                 }
             }
             core.info(`Head Commit is: "${kit.headCommit}"`);
@@ -7565,6 +7565,7 @@ function run() {
             const npmVersion = yield src_exec('npm', ['version', '--allow-same-version=false', `--git-tag-version=${inputs.tag}`, kit.bumpVersion]);
             if (npmVersion.success)
                 core.info(`Bumped Runner Package version: from ${pkgVersion} to ${npmVersion.stdout.slice(1)}`);
+            core.setOutput('version', npmVersion.stdout);
             //TODO: Set up git config for user name and user email
             // Commit the version bump on package.json
             const commited = yield src_exec('git', ['commit', '-a', '-m', inputs.commitMessage.replace(/{{version}}/g, npmVersion.stdout)]);
