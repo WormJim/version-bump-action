@@ -4,6 +4,7 @@ import context from './context';
 import { git, npm } from './exec';
 import { getPackage } from './utils';
 import Versioned from './Version.class';
+import * as fs from 'fs';
 
 async function run(): Promise<void> {
   core.info('Initializing Version Bump');
@@ -36,12 +37,16 @@ async function run(): Promise<void> {
 
     core.info(`Version type to bump: ${kit.bumpVersion.toUpperCase()}`);
 
-    if (inputs.pathToPackage !== '.') {
-      core.info(`Current Working Directory is ${process.cwd()}`);
-      process.chdir(inputs.pathToPackage);
-      core.info(`Updated Working Directory is ${process.cwd()}`);
-      core.info(`Using ${inputs.pathToPackage} as working directory...`);
-    }
+    // if (inputs.pathToPackage !== '.') {
+    //   core.info(`Current Working Directory is ${process.cwd()}`);
+    //   process.chdir(inputs.pathToPackage);
+    //   core.info(`Updated Working Directory is ${process.cwd()}`);
+    //   core.info(`Using ${inputs.pathToPackage} as working directory...`);
+    // }
+
+    console.log(fs.readdirSync(process.cwd(), { withFileTypes: true }));
+    // .filter((dirent) => dirent.isDirectory())
+    // .map((dirent) => dirent.name);
 
     // Resolve Current Release Version From Package Json
     // const pkgVersion = (await getPackage(inputs.pathToPackage)).version.toString();
