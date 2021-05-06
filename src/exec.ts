@@ -35,8 +35,8 @@ const exec = async (command: string, args: string[] = [], silent: boolean = true
 
 const command = (command: string) => {
   return async (args: string[] = []): Promise<string> => {
-    return await exec(command, args, true).then((res) => {
-      if (res.stderr != '' && !res.success) {
+    return await exec(command, args).then((res) => {
+      if (res.stderr !== '' && !res.success) {
         throw new Error(res.stderr);
       }
       return res.stdout.trim();

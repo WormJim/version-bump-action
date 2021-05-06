@@ -5,6 +5,8 @@ import { getPackage } from './utils';
 import Versioned from './Version.class';
 
 async function run(): Promise<void> {
+  core.info('Initializing Version Bump');
+
   try {
     // Get Inputs and Initialize
     const inputs = await context.getInputs();
@@ -13,7 +15,7 @@ async function run(): Promise<void> {
     // Guard against unwanted branch pushs.
     const branch = await git(['branch', '--show-current']);
     if (branch !== inputs.ref) {
-      throw `Ref (${inputs.ref}) does not match branch (${branch})`;
+      throw new Error(`${inputs.ref} does not match ${branch}`);
     }
 
     core.info(`Head Commit is: "${kit.headCommit}"`);

@@ -1,5 +1,15 @@
+/.dev
+/lib
 node_modules
+
 .gitCredentials
 nodemon.json
 event.json
 original.js
+
+# dotenv environment variables file
+.env
+.env.test
+
+# Compiled binary addons (https://nodejs.org/api/addons.html)
+build/Release

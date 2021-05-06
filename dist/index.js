@@ -7426,8 +7426,8 @@ const exec_exec = (command, args = [], silent = true) => exec_awaiter(void 0, vo
 });
 const command = (command) => {
     return (args = []) => exec_awaiter(void 0, void 0, void 0, function* () {
-        return yield exec_exec(command, args, true).then((res) => {
-            if (res.stderr != '' && !res.success) {
+        return yield exec_exec(command, args).then((res) => {
+            if (res.stderr !== '' && !res.success) {
                 throw new Error(res.stderr);
             }
             return res.stdout.trim();
@@ -7539,6 +7539,7 @@ var main_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arg
 
 function run() {
     return main_awaiter(this, void 0, void 0, function* () {
+        core.info('Initializing Version Bump');
         try {
             // Get Inputs and Initialize
             const inputs = yield context.getInputs();
@@ -7546,7 +7547,7 @@ function run() {
             // Guard against unwanted branch pushs.
             const branch = yield git(['branch', '--show-current']);
             if (branch !== inputs.ref) {
-                throw `Ref (${inputs.ref}) does not match branch (${branch})`;
+                throw new Error(`${inputs.ref} does not match ${branch}`);
             }
             core.info(`Head Commit is: "${kit.headCommit}"`);
             if (kit.headIsBump) {
