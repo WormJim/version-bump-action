@@ -22,7 +22,7 @@ jobs:
 
       - name: "Bump Version"
         id: version-bump
-        uses: "wormjim/verion-bump-action@master"
+        uses: WormJim/version-bump-action@main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
