@@ -26,6 +26,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: Bump version to {{verison}}
+          path-to-package: .
           patch: Patch, Fix
           minor: Feature, Feat, feat
 
