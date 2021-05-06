@@ -7159,19 +7159,26 @@ function wrappy (fn, cb) {
 
 /***/ }),
 
-/***/ 7358:
-/***/ ((module) => {
-
-module.exports = eval("require")("./package.json");
-
-
-/***/ }),
-
 /***/ 2877:
 /***/ ((module) => {
 
 module.exports = eval("require")("encoding");
 
+
+/***/ }),
+
+/***/ 875:
+/***/ ((module) => {
+
+function webpackEmptyContext(req) {
+	var e = new Error("Cannot find module '" + req + "'");
+	e.code = 'MODULE_NOT_FOUND';
+	throw e;
+}
+webpackEmptyContext.keys = () => ([]);
+webpackEmptyContext.resolve = webpackEmptyContext;
+webpackEmptyContext.id = 875;
+module.exports = webpackEmptyContext;
 
 /***/ }),
 
@@ -7320,6 +7327,11 @@ module.exports = require("zlib");;
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__nccwpck_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
 /******/ 	(() => {
 /******/ 		// define __esModule on exports
@@ -7539,8 +7551,8 @@ function run() {
             // Resolve Current Release Version From Package Json
             // const pkgVersion = (await getPackage(inputs.pathToPackage)).version.toString();
             // console.log(`core.getInput('path-to-package')`, core.getInput('path-to-package'));
-            console.log('Resolved Path: ', external_path_.join(inputs.pathToPackage, 'package.json'));
-            const { version: pkgVersion } = __nccwpck_require__(7358);
+            console.log('Resolved Path: ', external_path_.join(inputs.pathToPackage, './main/package.json'));
+            const { version: pkgVersion } = __nccwpck_require__(875)(external_path_.join(inputs.pathToPackage, './main/package.json'));
             core.info(`Current Version is: ${pkgVersion}`);
             // Bump Runner Package Json
             const version = yield npm(['version', '--allow-same-version=false', `--git-tag-version=${inputs.tag}`, kit.bumpVersion]);
