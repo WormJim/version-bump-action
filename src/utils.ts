@@ -1,9 +1,9 @@
 import * as path from 'path';
 import * as fs from 'fs';
 
-export const getPackage = (workspace: string): { version: string } => {
-  // const pathToPackage = path.join(workspace, 'package.json');
-  const pathToPackage = path.resolve(process.env.GITHUB_WORKSPACE!, 'package.json');
+export const getPackage = (workspace: string = '../'): { version: string } => {
+  const pathToPackage = path.join('../', 'package.json');
+  // const pathToPackage = path.resolve(, 'package.json');
   if (!fs.existsSync(pathToPackage)) throw new Error(`${pathToPackage} could not be found in your project's root.`);
   return require(pathToPackage);
 };
