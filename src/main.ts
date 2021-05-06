@@ -47,8 +47,8 @@ async function run(): Promise<void> {
     // Resolve Current Release Version From Package Json
     // const pkgVersion = (await getPackage(inputs.pathToPackage)).version.toString();
     // console.log(`core.getInput('path-to-package')`, core.getInput('path-to-package'));
-    console.log('Resolved Path: ', path.join(inputs.pathToPackage, 'package.json'));
-    const { version: pkgVersion } = await import(path.join(inputs.pathToPackage, 'package.json'));
+    console.log('Resolved Path: ', path.resolve(inputs.pathToPackage, '../package.json'));
+    const { version: pkgVersion } = await import(path.resolve(inputs.pathToPackage, '../package.json'));
     core.info(`Current Version is: ${pkgVersion}`);
 
     // Bump Runner Package Json

@@ -7548,8 +7548,8 @@ function run() {
             // Resolve Current Release Version From Package Json
             // const pkgVersion = (await getPackage(inputs.pathToPackage)).version.toString();
             // console.log(`core.getInput('path-to-package')`, core.getInput('path-to-package'));
-            console.log('Resolved Path: ', external_path_.join(inputs.pathToPackage, 'package.json'));
-            const { version: pkgVersion } = yield __nccwpck_require__(7070)(external_path_.join(inputs.pathToPackage, 'package.json'));
+            console.log('Resolved Path: ', external_path_.resolve(inputs.pathToPackage, '../package.json'));
+            const { version: pkgVersion } = yield __nccwpck_require__(7070)(external_path_.resolve(inputs.pathToPackage, '../package.json'));
             core.info(`Current Version is: ${pkgVersion}`);
             // Bump Runner Package Json
             const version = yield npm(['version', '--allow-same-version=false', `--git-tag-version=${inputs.tag}`, kit.bumpVersion]);
