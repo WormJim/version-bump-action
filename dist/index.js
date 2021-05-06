@@ -7456,7 +7456,7 @@ var utils_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _ar
 
 
 const getPackage = (workspace) => {
-    const pathToPackage = __nccwpck_require__.ab + "version-bump-action/" + workspace + '//package.json';
+    const pathToPackage = external_path_.join(workspace, 'package.json');
     if (!external_fs_.existsSync(pathToPackage))
         throw new Error(`${pathToPackage} could not be found in your project's root.`);
     return __nccwpck_require__(875)(pathToPackage);
