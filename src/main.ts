@@ -1,6 +1,6 @@
 import * as core from '@actions/core';
 import context from './context';
-import exec from './exec';
+import { git, npm } from './exec';
 import { getPackage } from './utils';
 import Versioned from './Version.class';
 
@@ -11,11 +11,9 @@ async function run(): Promise<void> {
     const kit = new Versioned(inputs);
 
     // Guard against unwanted branch pushs.
-    const branches = await exec('git', ['branch', '--show-current']);
-    if (branches.success) {
-      if (branches.stdout !== inputs.ref) {
-        throw `Ref (${process.env.GITHUB_REF?.split('/').pop()}) does not match branch (${inputs.ref})`;
-      }
+    const branch = await git(['branch', '--show-current']);
+    if (branch !== inputs.ref) {
+      throw `Ref (${inputs.ref}) does not match branch (${branch})`;
     }
 
     core.info(`Head Commit is: "${kit.headCommit}"`);
@@ -45,26 +43,21 @@ async function run(): Promise<void> {
     core.info(`Current Version is: ${pkgVersion}`);
 
     // Bump Runner Package Json
-    const npmVersion = await exec('npm', ['version', '--allow-same-version=false', `--git-tag-version=${inputs.tag}`, kit.bumpVersion]);
-    if (npmVersion.success) core.info(`Bumped Runner Package version: from ${pkgVersion} to ${npmVersion.stdout.slice(1)}`);
-
-    core.setOutput('version', npmVersion.stdout)
+    const version = await npm(['version', '--allow-same-version=false', `--git-tag-version=${inputs.tag}`, kit.bumpVersion]);
+    core.info(`Bumped Runner Package version: from ${pkgVersion} to ${version.slice(1)}`);
+    core.setOutput('version', version);
 
     //TODO: Set up git config for user name and user email
 
     // Commit the version bump on package.json
-    const commited = await exec('git', ['commit', '-a', '-m', inputs.commitMessage.replace(/{{version}}/g, npmVersion.stdout)]);
-    if (commited.success) {
-      core.info(`Successful commit: "${inputs.commitMessage.replace(/{{version}}/g, npmVersion.stdout)}" to branch ${inputs.ref.toUpperCase()}`);
-    }
+    await git(['commit', '-a', '-m', inputs.commitMessage.replace(/{{version}}/g, version)]);
+    core.info(`Successful commit: "${inputs.commitMessage.replace(/{{version}}/g, version)}" to branch ${inputs.ref.toUpperCase()}`);
 
     // Push Commit Up To Remote Server
     const remoteRepo = `https://${process.env.GITHUB_ACTOR}:${inputs.token}@github.com/${process.env.GITHUB_REPOSITORY}.git`;
 
-    const push = await exec('git', ['push', '--follow-tags', remoteRepo]);
-    if (push.success) {
-      core.info(`Successful push: "${inputs.commitMessage.replace(/{{version}}/g, npmVersion.stdout)}" to branch ${inputs.ref.toUpperCase()}`);
-    }
+    await git(['push', '--follow-tags', remoteRepo]);
+    core.info(`Successful push: "${inputs.commitMessage.replace(/{{version}}/g, version)}" to branch ${inputs.ref.toUpperCase()}`);
   } catch (error) {
     core.setFailed(error.message);
   }

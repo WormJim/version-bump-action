@@ -7367,7 +7367,6 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 };
 
 const getInputs = () => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b;
     const defaults = {
         commitMessage: 'ci: Bump version to {{version}}',
         pathToPackage: '.',
@@ -7383,7 +7382,7 @@ const getInputs = () => __awaiter(void 0, void 0, void 0, function* () {
         minor: (core.getInput('minor').length && [...defaults.minor, ...core.getInput('minor').split(',')]) || defaults.minor,
         patch: (core.getInput('patch').length && core.getInput('patch').split(',')) || undefined,
         tag: /true/i.test(core.getInput('tag')),
-        ref: ((_b = (_a = core.getInput('ref')) === null || _a === void 0 ? void 0 : _a.split('/')) === null || _b === void 0 ? void 0 : _b.pop()) || defaults.ref,
+        ref: core.getInput('ref').split('/').pop() || defaults.ref,
     };
 });
 /* harmony default export */ const context = ({
@@ -7425,7 +7424,19 @@ const exec_exec = (command, args = [], silent = true) => exec_awaiter(void 0, vo
         stderr: stderr.trim(),
     };
 });
-/* harmony default export */ const src_exec = (exec_exec);
+const command = (command) => {
+    return (args = []) => exec_awaiter(void 0, void 0, void 0, function* () {
+        return yield exec_exec(command, args, true).then((res) => {
+            if (res.stderr != '' && !res.success) {
+                throw new Error(res.stderr);
+            }
+            return res.stdout.trim();
+        });
+    });
+};
+const git = command('git');
+const npm = command('npm');
+/* harmony default export */ const src_exec = ((/* unused pure expression or super */ null && (exec_exec)));
 
 // EXTERNAL MODULE: external "path"
 var external_path_ = __nccwpck_require__(5622);
@@ -7527,18 +7538,15 @@ var main_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arg
 
 
 function run() {
-    var _a;
     return main_awaiter(this, void 0, void 0, function* () {
         try {
             // Get Inputs and Initialize
             const inputs = yield context.getInputs();
             const kit = new Versioned(inputs);
             // Guard against unwanted branch pushs.
-            const branches = yield src_exec('git', ['branch', '--show-current']);
-            if (branches.success) {
-                if (branches.stdout !== inputs.ref) {
-                    throw `Ref (${(_a = process.env.GITHUB_REF) === null || _a === void 0 ? void 0 : _a.split('/').pop()}) does not match branch (${inputs.ref})`;
-                }
+            const branch = yield git(['branch', '--show-current']);
+            if (branch !== inputs.ref) {
+                throw `Ref (${inputs.ref}) does not match branch (${branch})`;
             }
             core.info(`Head Commit is: "${kit.headCommit}"`);
             if (kit.headIsBump) {
@@ -7562,22 +7570,17 @@ function run() {
             const pkgVersion = getPackage(inputs.pathToPackage).version.toString();
             core.info(`Current Version is: ${pkgVersion}`);
             // Bump Runner Package Json
-            const npmVersion = yield src_exec('npm', ['version', '--allow-same-version=false', `--git-tag-version=${inputs.tag}`, kit.bumpVersion]);
-            if (npmVersion.success)
-                core.info(`Bumped Runner Package version: from ${pkgVersion} to ${npmVersion.stdout.slice(1)}`);
-            core.setOutput('version', npmVersion.stdout);
+            const version = yield npm(['version', '--allow-same-version=false', `--git-tag-version=${inputs.tag}`, kit.bumpVersion]);
+            core.info(`Bumped Runner Package version: from ${pkgVersion} to ${version.slice(1)}`);
+            core.setOutput('version', version);
             //TODO: Set up git config for user name and user email
             // Commit the version bump on package.json
-            const commited = yield src_exec('git', ['commit', '-a', '-m', inputs.commitMessage.replace(/{{version}}/g, npmVersion.stdout)]);
-            if (commited.success) {
-                core.info(`Successful commit: "${inputs.commitMessage.replace(/{{version}}/g, npmVersion.stdout)}" to branch ${inputs.ref.toUpperCase()}`);
-            }
+            yield git(['commit', '-a', '-m', inputs.commitMessage.replace(/{{version}}/g, version)]);
+            core.info(`Successful commit: "${inputs.commitMessage.replace(/{{version}}/g, version)}" to branch ${inputs.ref.toUpperCase()}`);
             // Push Commit Up To Remote Server
             const remoteRepo = `https://${process.env.GITHUB_ACTOR}:${inputs.token}@github.com/${process.env.GITHUB_REPOSITORY}.git`;
-            const push = yield src_exec('git', ['push', '--follow-tags', remoteRepo]);
-            if (push.success) {
-                core.info(`Successful push: "${inputs.commitMessage.replace(/{{version}}/g, npmVersion.stdout)}" to branch ${inputs.ref.toUpperCase()}`);
-            }
+            yield git(['push', '--follow-tags', remoteRepo]);
+            core.info(`Successful push: "${inputs.commitMessage.replace(/{{version}}/g, version)}" to branch ${inputs.ref.toUpperCase()}`);
         }
         catch (error) {
             core.setFailed(error.message);
