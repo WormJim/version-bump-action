@@ -48,6 +48,8 @@ async function run(): Promise<void> {
     const npmVersion = await exec('npm', ['version', '--allow-same-version=false', `--git-tag-version=${inputs.tag}`, kit.bumpVersion]);
     if (npmVersion.success) core.info(`Bumped Runner Package version: from ${pkgVersion} to ${npmVersion.stdout.slice(1)}`);
 
+    core.setOutput('version', npmVersion.stdout)
+
     //TODO: Set up git config for user name and user email
 
     // Commit the version bump on package.json
