@@ -20,6 +20,9 @@ jobs:
         with:
           node-version: 12
 
+      - name: "cat package.json"
+        run: cat ./package.json
+        
       - name: "Bump Version"
         id: version-bump
         uses: WormJim/version-bump-action@main
