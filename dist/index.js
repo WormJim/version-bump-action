@@ -7372,7 +7372,7 @@ const getInputs = () => __awaiter(void 0, void 0, void 0, function* () {
         pathToPackage: '.',
         major: ['BREAKING CHANGE', 'major'],
         minor: ['feature', 'minor'],
-        ref: 'refs/heads/main',
+        ref: process.env.GITHUB_REF.split('/').pop(),
     };
     return {
         token: core.getInput('token', { required: true }),
@@ -7382,7 +7382,7 @@ const getInputs = () => __awaiter(void 0, void 0, void 0, function* () {
         minor: (core.getInput('minor').length && [...defaults.minor, ...core.getInput('minor').split(',')]) || defaults.minor,
         patch: (core.getInput('patch').length && core.getInput('patch').split(',')) || undefined,
         tag: /true/i.test(core.getInput('tag')),
-        ref: core.getInput('ref') || defaults.ref,
+        ref: core.getInput('ref').split('/').pop() || defaults.ref,
     };
 });
 /* harmony default export */ const context = ({
@@ -7533,10 +7533,10 @@ function run() {
             const inputs = yield context.getInputs();
             const kit = new Versioned(inputs);
             // Guard against unwanted branch pushs.
-            if (inputs.ref) {
-                const { stdout: branch } = yield src_exec('git', ['branch', '--show-current']);
-                if (branch !== ((_a = inputs.ref) === null || _a === void 0 ? void 0 : _a.split('/').pop())) {
-                    core.info('Current Ref does not match desired branch');
+            const branches = yield src_exec('git', ['branch', '--show-current']);
+            if (branches.success) {
+                if (branches.stdout !== inputs.ref) {
+                    core.info(`Ref (${(_a = process.env.GITHUB_REF) === null || _a === void 0 ? void 0 : _a.split('/').pop()}) does not match branch (${inputs.ref})`);
                     return;
                 }
             }
