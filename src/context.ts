@@ -13,7 +13,7 @@ export interface Inputs {
 
 export const getInputs = async (): Promise<Inputs> => {
   const defaults = {
-    commitMessage: 'ci: Bump version to {{version}}',
+    commitMessage: 'CI: Bump version to {{version}}',
     pathToPackage: process.env.GITHUB_WORKSPACE!,
     major: ['BREAKING CHANGE', 'major'],
     minor: ['feature', 'minor'],

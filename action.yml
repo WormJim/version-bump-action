@@ -15,11 +15,11 @@ inputs:
     description: Github Public Access Token
     default: ${{ github.token }}
     required: false
-  commit-message: 
+  commit_message: 
     description: (Optional) Set the commit message for the version bump
-    default: 'ci: Bump version to {{version}}'
+    default: 'CI: Bump version to {{version}}'
     required: false
-  path-to-package: 
+  path_to_package: 
     description: (Optional) The path to the repositories package.json in the current Github Runner
     default: ${{ github.workspace }}
     required: false
