@@ -1,7 +1,7 @@
 import * as path from 'path';
 import * as core from '@actions/core';
 import context from './context';
-import { git, npm } from './exec';
+import { getGitConfig, git, npm, setGitConfig } from './exec';
 import { getPackage } from './utils';
 import Versioned from './Version.class';
 import * as fs from 'fs';
@@ -45,11 +45,6 @@ async function run(): Promise<void> {
     }
 
     // Resolve Current Release Version From Package Json
-    // const pkgVersion = (await getPackage(inputs.pathToPackage)).version.toString();
-    // console.log(`core.getInput('path-to-package')`, core.getInput('path-to-package'));
-
-    // console.log('Resolved Path: ', path.resolve(inputs.pathToPackage, './package.json'));
-    // const { version: pkgVersion } = require(path.resolve(inputs.pathToPackage, './package.json'));
     const pkg = JSON.parse(fs.readFileSync(path.join(inputs.pathToPackage, './package.json'), 'utf-8'));
     core.info(`Current Version is: ${pkg.version}`);
 
@@ -59,6 +54,11 @@ async function run(): Promise<void> {
     core.setOutput('version', version);
 
     //TODO: Set up git config for user name and user email
+    const userName = await getGitConfig('user.name');
+    const userEmail = await getGitConfig('user.email');
+    await setGitConfig('user.name', `"${userName || process.env.GITHUB_USER || 'CI: Automation Version Bump'}"`);
+    await setGitConfig('user.email', `"${userEmail || process.env.GITHUB_EMAIL || 'bump-version@users.noreply.github.com'}"`);
+    core.info(`Configuring Git for ${userName} <${userEmail}>`);
 
     // Commit the version bump on package.json
     await git(['commit', '-a', '-m', inputs.commitMessage.replace(/{{version}}/g, version)]);

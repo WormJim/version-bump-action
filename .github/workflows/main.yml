@@ -20,16 +20,15 @@ jobs:
         with:
           node-version: 12
 
-      - name: "cat package.json"
-        run: cat ./package.json
-
-      - name: Display Current Working Directory
-        run: |
-          pwd
-
-      - name: Display Files In PWD
-        run: |
-          ls
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v3.1.0
+        id: import_gpg
+        with:
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          git-committer-name: WormJim
+          git-user-signingkey: true
+          git-commit-gpgsign: true
 
       - name: "Bump Version"
         id: version-bump

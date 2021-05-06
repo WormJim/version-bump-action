@@ -47,4 +47,12 @@ const command = (command: string) => {
 export const git = command('git');
 export const npm = command('npm');
 
+export const getGitConfig = (key: string): Promise<string> => {
+  return git(['config', '--get', key]);
+};
+
+export const setGitConfig = (key: string, value: string): Promise<string> => {
+  return git(['config', key, value]);
+};
+
 export default exec;
