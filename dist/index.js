@@ -7167,7 +7167,7 @@ module.exports = eval("require")("encoding");
 
 /***/ }),
 
-/***/ 875:
+/***/ 7835:
 /***/ ((module) => {
 
 function webpackEmptyContext(req) {
@@ -7177,7 +7177,7 @@ function webpackEmptyContext(req) {
 }
 webpackEmptyContext.keys = () => ([]);
 webpackEmptyContext.resolve = webpackEmptyContext;
-webpackEmptyContext.id = 875;
+webpackEmptyContext.id = 7835;
 module.exports = webpackEmptyContext;
 
 /***/ }),
@@ -7456,10 +7456,10 @@ var utils_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _ar
 
 
 const getPackage = (workspace) => {
-    const pathToPackage = external_path_.resolve('../', 'package.json');
-    if (!external_fs_.existsSync(pathToPackage))
+    const pathToPackage = __nccwpck_require__.ab + "package.json";
+    if (!external_fs_.existsSync(__nccwpck_require__.ab + "package.json"))
         throw new Error(`${pathToPackage} could not be found in your project's root.`);
-    return __nccwpck_require__(875)(pathToPackage);
+    return __nccwpck_require__(7835)(__nccwpck_require__.ab + "package.json");
 };
 const npmBump = () => utils_awaiter(void 0, void 0, void 0, function* () { });
 const bumpGitHubPackage = () => utils_awaiter(void 0, void 0, void 0, function* () { });
