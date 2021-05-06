@@ -14,8 +14,7 @@ async function run(): Promise<void> {
     const branches = await exec('git', ['branch', '--show-current']);
     if (branches.success) {
       if (branches.stdout !== inputs.ref) {
-        core.info(`Ref (${process.env.GITHUB_REF?.split('/').pop()}) does not match branch (${inputs.ref})`);
-        return;
+        throw `Ref (${process.env.GITHUB_REF?.split('/').pop()}) does not match branch (${inputs.ref})`;
       }
     }
 
