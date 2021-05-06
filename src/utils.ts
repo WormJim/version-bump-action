@@ -3,7 +3,7 @@ import * as fs from 'fs';
 
 export const getPackage = (workspace: string): { version: string } => {
   const pathToPackage = path.resolve(workspace, 'package.json');
-  if (!fs.existsSync(pathToPackage)) throw new Error("package.json could not be found in your project's root.");
+  if (!fs.existsSync(pathToPackage)) throw new Error(`${pathToPackage} could not be found in your project's root.`);
   return require(pathToPackage);
 };
 
