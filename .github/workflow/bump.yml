@@ -1,0 +1,31 @@
+name: "Bump Version"
+
+on:
+  push: ["main"]
+
+jobs:
+  bump-version:
+    name: "Bump Version on master"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Checkout source code"
+        uses: "actions/checkout@v2"
+        with:
+          ref: ${{ github.ref }}
+          
+      - name: "Setup Node.js"
+        uses: "actions/setup-node@v1"
+        with:
+          node-version: 12
+
+      - name: "Bump Version"
+        id: version-bump
+        uses: "wormjim/verion-bump-action@master"
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name:  'Output Step'
+        env:
+          VERSION: ${{ steps.version-bump.outputs.version }}
+        run: echo "Bumped Version to $VERSION"
