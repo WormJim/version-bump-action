@@ -48,16 +48,14 @@ async function run(): Promise<void> {
     // const pkgVersion = (await getPackage(inputs.pathToPackage)).version.toString();
     // console.log(`core.getInput('path-to-package')`, core.getInput('path-to-package'));
 
-    const content = fs.readFileSync(path.join(inputs.pathToPackage, './package.json'), 'utf-8');
-    console.log('content', content);
-
-    console.log('Resolved Path: ', path.resolve(inputs.pathToPackage, './package.json'));
-    const { version: pkgVersion } = require(path.resolve(inputs.pathToPackage, './package.json'));
-    core.info(`Current Version is: ${pkgVersion}`);
+    // console.log('Resolved Path: ', path.resolve(inputs.pathToPackage, './package.json'));
+    // const { version: pkgVersion } = require(path.resolve(inputs.pathToPackage, './package.json'));
+    const pkg = JSON.parse(fs.readFileSync(path.join(inputs.pathToPackage, './package.json'), 'utf-8'));
+    core.info(`Current Version is: ${pkg.version}`);
 
     // Bump Runner Package Json
     const version = await npm(['version', '--allow-same-version=false', `--git-tag-version=${inputs.tag}`, kit.bumpVersion]);
-    core.info(`Bumped Runner Package version: from ${pkgVersion} to ${version.slice(1)}`);
+    core.info(`Bumped Runner Package version: from ${pkg.version} to ${version.slice(1)}`);
     core.setOutput('version', version);
 
     //TODO: Set up git config for user name and user email
