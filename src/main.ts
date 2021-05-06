@@ -1,10 +1,8 @@
-import * as path from 'path';
 import * as core from '@actions/core';
 import context from './context';
 import { getGitConfig, git, npm, setGitConfig } from './exec';
 import { getPackage } from './utils';
 import Versioned from './Version.class';
-import * as fs from 'fs';
 
 async function run(): Promise<void> {
   core.info('Initializing Version Bump');
