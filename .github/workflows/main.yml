@@ -26,6 +26,8 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: Bump version to {{verison}}
+          patch: Patch
+          minor: Feature, Feat, feat
 
       - name:  'Output Step'
         env:
