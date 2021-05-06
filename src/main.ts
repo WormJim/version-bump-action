@@ -44,9 +44,11 @@ async function run(): Promise<void> {
     //   core.info(`Using ${inputs.pathToPackage} as working directory...`);
     // }
 
-    console.log(fs.readdirSync(process.cwd(), { withFileTypes: true }));
-    // .filter((dirent) => dirent.isDirectory())
-    // .map((dirent) => dirent.name);
+    const files = fs
+      .readdirSync(process.cwd(), { withFileTypes: true })
+      .filter((dirent) => !dirent.isDirectory())
+      .map((dirent) => dirent.name);
+    console.log('files', files);
 
     // Resolve Current Release Version From Package Json
     // const pkgVersion = (await getPackage(inputs.pathToPackage)).version.toString();
