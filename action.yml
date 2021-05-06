@@ -40,5 +40,5 @@ inputs:
     required: false
   ref: 
     description: (Optional) The target branch to push the version bump commit to.
-    default: Most likely refs/heads/main. This comes from action/checkout when setting up your job.
+    default: refs/heads/main
     required: false
