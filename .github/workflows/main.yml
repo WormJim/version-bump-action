@@ -23,6 +23,14 @@ jobs:
       - name: "cat package.json"
         run: cat ./package.json
 
+      - name: Display Current Working Directory
+        run: |
+          pwd
+
+      - name: Display Files In PWD
+        run: |
+          ls
+
       - name: "Bump Version"
         id: version-bump
         uses: WormJim/version-bump-action@main
