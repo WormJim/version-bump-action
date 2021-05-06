@@ -16,7 +16,7 @@ inputs:
     required: true
   commit-message: 
     description: (Optional) Set the commit message for the version bump
-    default: 'Bump Version to {{version}}'
+    default: 'ci: Bump version to {{version}}'
     required: false
   path-to-package: 
     description: (Optional) The path to the repositories package.json in the current Github Runner

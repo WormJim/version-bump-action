@@ -11,10 +11,10 @@ async function run(): Promise<void> {
     const kit = new Versioned(inputs);
 
     // Guard against unwanted branch pushs.
-    if (inputs.ref) {
-      const { stdout: branch } = await exec('git', ['branch', '--show-current']);
-      if (branch !== inputs.ref?.split('/').pop()) {
-        core.info('Current Ref does not match desired branch');
+    const branches = await exec('git', ['branch', '--show-current']);
+    if (branches.success) {
+      if (branches.stdout !== inputs.ref) {
+        core.info(`Ref (${process.env.GITHUB_REF?.split('/').pop()}) does not match branch (${inputs.ref})`);
         return;
       }
     }

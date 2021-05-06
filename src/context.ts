@@ -17,7 +17,7 @@ export const getInputs = async (): Promise<Inputs> => {
     pathToPackage: '.',
     major: ['BREAKING CHANGE', 'major'],
     minor: ['feature', 'minor'],
-    ref: 'refs/heads/main',
+    ref: process.env.GITHUB_REF!.split('/')!.pop()!,
   };
 
   return {
@@ -28,7 +28,7 @@ export const getInputs = async (): Promise<Inputs> => {
     minor: (core.getInput('minor').length && [...defaults.minor, ...core.getInput('minor').split(',')]) || defaults.minor,
     patch: (core.getInput('patch').length && core.getInput('patch').split(',')) || undefined,
     tag: /true/i.test(core.getInput('tag')),
-    ref: core.getInput('ref') || defaults.ref,
+    ref: core.getInput('ref').split('/').pop() || defaults.ref,
   };
 };
 
