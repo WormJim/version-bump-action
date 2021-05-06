@@ -42,3 +42,6 @@ inputs:
     description: (Optional) The target branch to push the version bump commit to.
     default: refs/heads/main
     required: false
+outputs:
+  version:
+    description: 'Version Bump'
