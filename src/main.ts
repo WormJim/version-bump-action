@@ -59,7 +59,7 @@ async function run(): Promise<void> {
     }
 
     // Push Commit Up To Remote Server
-    const remoteRepo = `https://${process.env.GITHUB_ACTOR}:${inputs.token}@github.com/${process.env.GITHUB_ACTOR}/${process.env.GITHUB_REPOSITORY}.git`;
+    const remoteRepo = `https://${process.env.GITHUB_ACTOR}:${inputs.token}@github.com/${process.env.GITHUB_REPOSITORY}.git`;
 
     const push = await exec('git', ['push', remoteRepo]);
     if (push.success) {
