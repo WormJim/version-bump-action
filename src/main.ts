@@ -41,7 +41,7 @@ async function run(): Promise<void> {
     }
 
     // Resolve Current Release Version From Package Json
-    const pkgVersion = getPackage(inputs.pathToPackage).version.toString();
+    const pkgVersion = (await getPackage(inputs.pathToPackage)).version.toString();
     core.info(`Current Version is: ${pkgVersion}`);
 
     // Bump Runner Package Json

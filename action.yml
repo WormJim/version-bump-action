@@ -13,14 +13,15 @@ branding:
 inputs: 
   token: 
     description: Github Public Access Token
-    required: true
+    default: ${{ github.token }}
+    required: false
   commit-message: 
     description: (Optional) Set the commit message for the version bump
     default: 'ci: Bump version to {{version}}'
     required: false
   path-to-package: 
     description: (Optional) The path to the repositories package.json in the current Github Runner
-    default: '.'
+    default: ${{ github.workspace }}
     required: false
   tag:
     description: (Optional) If true (default false) a version tag is pushed
