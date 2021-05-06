@@ -35,9 +35,9 @@ jobs:
         uses: WormJim/version-bump-action@main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: Bump version to {{verison}}
-          patch: Patch, Fix
+          commit_message: Bump version to {{verison}}
           minor: Feature, Feat, feat
+          patch: Patch, Fix
 
       - name:  'Output Step'
         env:
