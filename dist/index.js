@@ -7167,18 +7167,22 @@ module.exports = eval("require")("encoding");
 
 /***/ }),
 
-/***/ 875:
+/***/ 7070:
 /***/ ((module) => {
 
-function webpackEmptyContext(req) {
-	var e = new Error("Cannot find module '" + req + "'");
-	e.code = 'MODULE_NOT_FOUND';
-	throw e;
+function webpackEmptyAsyncContext(req) {
+	// Here Promise.resolve().then() is used instead of new Promise() to prevent
+	// uncaught exception popping up in devtools
+	return Promise.resolve().then(() => {
+		var e = new Error("Cannot find module '" + req + "'");
+		e.code = 'MODULE_NOT_FOUND';
+		throw e;
+	});
 }
-webpackEmptyContext.keys = () => ([]);
-webpackEmptyContext.resolve = webpackEmptyContext;
-webpackEmptyContext.id = 875;
-module.exports = webpackEmptyContext;
+webpackEmptyAsyncContext.keys = () => ([]);
+webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
+webpackEmptyAsyncContext.id = 7070;
+module.exports = webpackEmptyAsyncContext;
 
 /***/ }),
 
@@ -7494,8 +7498,6 @@ class Versioned {
     }
 }
 
-// EXTERNAL MODULE: external "fs"
-var external_fs_ = __nccwpck_require__(5747);
 ;// CONCATENATED MODULE: ./src/main.ts
 var main_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -7506,7 +7508,6 @@ var main_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arg
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-
 
 
 
@@ -7538,21 +7539,17 @@ function run() {
                 return;
             }
             core.info(`Version type to bump: ${kit.bumpVersion.toUpperCase()}`);
-            // if (inputs.pathToPackage !== '.') {
-            //   core.info(`Current Working Directory is ${process.cwd()}`);
-            //   process.chdir(inputs.pathToPackage);
-            //   core.info(`Updated Working Directory is ${process.cwd()}`);
-            //   core.info(`Using ${inputs.pathToPackage} as working directory...`);
-            // }
-            const file = external_fs_.readdirSync(process.cwd(), { withFileTypes: true }).find((dirent) => dirent.name === 'package.json');
-            // .map((dirent) => dirent.name)
-            // .find((file) => file === 'package.json');
-            console.log('file', file);
+            if (inputs.pathToPackage !== process.cwd()) {
+                core.info(`Current Working Directory is ${process.cwd()}`);
+                process.chdir(inputs.pathToPackage);
+                core.info(`Updated Working Directory is ${process.cwd()}`);
+                core.info(`Using ${inputs.pathToPackage} as working directory...`);
+            }
             // Resolve Current Release Version From Package Json
             // const pkgVersion = (await getPackage(inputs.pathToPackage)).version.toString();
             // console.log(`core.getInput('path-to-package')`, core.getInput('path-to-package'));
             console.log('Resolved Path: ', external_path_.join(inputs.pathToPackage, './main/package.json'));
-            const { version: pkgVersion } = __nccwpck_require__(875)(external_path_.join(inputs.pathToPackage, './main/package.json'));
+            const { version: pkgVersion } = yield __nccwpck_require__(7070)(external_path_.join(inputs.pathToPackage, './main/package.json'));
             core.info(`Current Version is: ${pkgVersion}`);
             // Bump Runner Package Json
             const version = yield npm(['version', '--allow-same-version=false', `--git-tag-version=${inputs.tag}`, kit.bumpVersion]);

@@ -37,23 +37,18 @@ async function run(): Promise<void> {
 
     core.info(`Version type to bump: ${kit.bumpVersion.toUpperCase()}`);
 
-    // if (inputs.pathToPackage !== '.') {
-    //   core.info(`Current Working Directory is ${process.cwd()}`);
-    //   process.chdir(inputs.pathToPackage);
-    //   core.info(`Updated Working Directory is ${process.cwd()}`);
-    //   core.info(`Using ${inputs.pathToPackage} as working directory...`);
-    // }
-
-    const file = fs.readdirSync(process.cwd(), { withFileTypes: true }).find((dirent) => dirent.name === 'package.json');
-    // .map((dirent) => dirent.name)
-    // .find((file) => file === 'package.json');
-    console.log('file', file);
+    if (inputs.pathToPackage !== process.cwd()) {
+      core.info(`Current Working Directory is ${process.cwd()}`);
+      process.chdir(inputs.pathToPackage);
+      core.info(`Updated Working Directory is ${process.cwd()}`);
+      core.info(`Using ${inputs.pathToPackage} as working directory...`);
+    }
 
     // Resolve Current Release Version From Package Json
     // const pkgVersion = (await getPackage(inputs.pathToPackage)).version.toString();
     // console.log(`core.getInput('path-to-package')`, core.getInput('path-to-package'));
     console.log('Resolved Path: ', path.join(inputs.pathToPackage, './main/package.json'));
-    const { version: pkgVersion } = require(path.join(inputs.pathToPackage, './main/package.json'));
+    const { version: pkgVersion } = await import(path.join(inputs.pathToPackage, './main/package.json'));
     core.info(`Current Version is: ${pkgVersion}`);
 
     // Bump Runner Package Json
