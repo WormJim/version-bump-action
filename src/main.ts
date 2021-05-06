@@ -48,7 +48,7 @@ async function run(): Promise<void> {
     // const pkgVersion = (await getPackage(inputs.pathToPackage)).version.toString();
     // console.log(`core.getInput('path-to-package')`, core.getInput('path-to-package'));
 
-    const content = fs.readFileSync(path.resolve(inputs.pathToPackage, './package.json'), 'utf-8');
+    const content = fs.readFileSync(path.join(inputs.pathToPackage, './package.json'), 'utf-8');
     console.log('content', content);
 
     console.log('Resolved Path: ', path.resolve(inputs.pathToPackage, './package.json'));
