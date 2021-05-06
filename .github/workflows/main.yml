@@ -25,6 +25,7 @@ jobs:
         uses: WormJim/version-bump-action@main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: Bump version to {{verison}}
 
       - name:  'Output Step'
         env:
