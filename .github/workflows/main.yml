@@ -2,7 +2,9 @@ name: "CI"
 
 on:
   push: 
-    branches: [main]
+    branches: 
+      - main
+      - releases/**
 
 jobs:
   bump-version:
@@ -38,6 +40,7 @@ jobs:
           commit_message: Bump version to {{version}}
           minor: Feature, Feat, feat
           patch: Patch, Fix
+          bump: ${{ contains(github.ref, 'releases/') && $(echo '${{ github.ref }}' | awk -F '/' '{print $NF}' ) }}
 
       - name:  'Output Step'
         env:
