@@ -44,7 +44,7 @@ inputs:
     required: false
   ref: 
     description: (Optional) The target branch to push the version bump commit to.
-    default: refs/heads/main
+    default: ${{ github.ref }}
     required: false
 outputs:
   version:
