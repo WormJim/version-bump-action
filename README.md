@@ -51,6 +51,7 @@ Use the following inputs with the `steps.with` key
 | `minor`           | `feature,minor`                   | String  | (Optional) Phrases to test head commit against. Your inputs extend default phrases. |
 | `patch`           | `''`                              | String  | (Optional) Phrases to test head commit against. Your inputs extend default phrases. |
 | `ref`             | `${{ github.ref }}`               | String  | (Optional) The target branch to push the version bump commit to.                    |
+| `bump`            | `false`                           | String  | (Optional) If you want to pass your own version number                              |
 
 ### outputs
 
