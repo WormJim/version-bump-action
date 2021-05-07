@@ -1,8 +1,10 @@
-name: "CI"
+name: "CI: Version Bump"
 
 on:
   push: 
-    branches: [main]
+    branches: 
+      - main
+      - releases/**      
 
 jobs:
   bump-version:
@@ -36,8 +38,9 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit_message: Bump version to {{version}}
-          minor: Feature, Feat, feat
-          patch: Patch, Fix
+          major: 'Release:, New:, Major:'
+          minor: 'Feature:, Feat:, feat:'
+          patch: 'Patch:, Fix:, Bump:, Push:'
 
       - name:  'Output Step'
         env:

@@ -1,13 +1,13 @@
-name: version-bump-action
-description: bump release version
+name: "Package Bump"
+description: Bump your package json version based on the head commit message.  
 
 runs:
   using: 'node12'
   main: 'dist/index.js'
 
 branding:
-  icon: activity
-  color: blue
+  icon: package
+  color: purple
 
 inputs: 
   token: 
