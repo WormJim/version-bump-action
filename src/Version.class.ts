@@ -37,7 +37,7 @@ export default class Versioned {
     return false;
   }
 
-  constructor({ commitMessage, major, minor, patch }: Opts) {
+  constructor({ commitMessage, major, minor, patch, bump }: Opts) {
     this.commitMessage = commitMessage;
     this._majorPhrases = major;
     this._minorPhrases = minor;
@@ -47,7 +47,7 @@ export default class Versioned {
     this._payload = payload;
     this._headCommit = payload?.head_commit.message || '';
 
-    this._bump = this._bumpVersion();
+    this._bump = bump || this._bumpVersion();
   }
 
   // Public Methods
