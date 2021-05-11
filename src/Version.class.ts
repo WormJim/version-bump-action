@@ -19,6 +19,7 @@ interface Opts extends Inputs {}
 export default class Versioned {
   private _bump: string | false;
   private _versionRegExp: RegExp = /v\d+\.\d+\.\d+/;
+  private _versionNumsRegExp: RegExp = /\d+\.\d+\.\d+/;
   private _majorPhrases;
   private _minorPhrases;
   private _patchPhrases;
@@ -37,7 +38,16 @@ export default class Versioned {
     return false;
   }
 
-  constructor({ commitMessage, major, minor, patch }: Opts) {
+  private _extractNum(version: string | false) {
+    // If the version variable is FLASE, RegEx test will return false
+    if (this._versionNumsRegExp.test(version as string)) {
+      return (version as string).match(this._versionNumsRegExp)![0];
+    }
+
+    return false;
+  }
+
+  constructor({ commitMessage, major, minor, patch, bump }: Opts) {
     this.commitMessage = commitMessage;
     this._majorPhrases = major;
     this._minorPhrases = minor;
@@ -47,7 +57,7 @@ export default class Versioned {
     this._payload = payload;
     this._headCommit = payload?.head_commit.message || '';
 
-    this._bump = this._bumpVersion();
+    this._bump = this._extractNum(bump) || this._bumpVersion();
   }
 
   // Public Methods

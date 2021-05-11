@@ -9,7 +9,17 @@ export interface Inputs {
   major: string[];
   patch: string[] | undefined;
   ref: string;
+  bump: string | false;
 }
+
+const boolConvert = (value: string) => {
+  try {
+    const parsed = JSON.parse(value);
+    return parsed;
+  } catch (error) {
+    return value;
+  }
+};
 
 export const getInputs = async (): Promise<Inputs> => {
   const defaults = {
@@ -30,6 +40,7 @@ export const getInputs = async (): Promise<Inputs> => {
     patch: (core.getInput('patch').length && [...defaults.patch, ...core.getInput('patch').split(',')]) || undefined,
     tag: /true/i.test(core.getInput('tag')),
     ref: core.getInput('ref').split('/').pop() || defaults.ref,
+    bump: /false/i.test(boolConvert(core.getInput('bump'))) ? false : core.getInput('bump'),
   };
 };
 

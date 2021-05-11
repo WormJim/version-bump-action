@@ -38,9 +38,13 @@ inputs:
     description: (Optional) Phrases to test head commit against. The phrases must be a single string delimited by a ','. Patch is the default version bump action for most commits.
     default: ''
     required: false
+  bump:
+    description: (Optional) If you want to pass your own version number. Must be a valid semver string. Ex. 0.1.0. The prefixed "v" is optional
+    default: 'false'
+    required: false
   ref: 
     description: (Optional) The target branch to push the version bump commit to.
-    default: refs/heads/main
+    default: ${{ github.ref }}
     required: false
 outputs:
   version:
