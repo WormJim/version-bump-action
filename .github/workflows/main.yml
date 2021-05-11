@@ -4,7 +4,7 @@ on:
   push: 
     branches: 
       - main
-      - releases/**
+      # - releases/**
 
 jobs:
   bump-version:
@@ -40,7 +40,7 @@ jobs:
           commit_message: Bump version to {{version}}
           minor: Feature, Feat, feat
           patch: Patch, Fix
-          bump: ${{ contains(github.ref, 'releases/') && $(echo '${{ github.ref }}' | awk -F '/' '{print $NF}' ) }}
+          # bump: ${{ contains(github.ref, 'releases/') && $(echo '${{ github.ref }}' | awk -F '/' '{print $NF}' ) }}
 
       - name:  'Output Step'
         env:
