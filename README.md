@@ -56,6 +56,7 @@ Use the following inputs with the `steps.with` key
 | `patch`           | `''`                              | String  | (Optional) Phrases to test head commit against. Your inputs extend default phrases.                 |
 | `ref`             | `${{ github.ref }}`               | String  | (Optional) The target branch to push the version bump commit to.                                    |
 | `bump`            | `false`                           | String  | (Optional) Pass user defined version. Must be a valid semver string. Ex. 0.1.0. The "v" is optional |
+| `persist_phrase`  | `false`                           | Boolean | (Optional) Persist default phrases with custom phrases.                                             |
 
 ### outputs
 
