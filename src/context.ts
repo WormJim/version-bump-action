@@ -27,23 +27,31 @@ const coreInput = (input: string, required: boolean = false) => {
 
 export const getInputs = async (): Promise<Inputs> => {
   const defaults = {
-    commitMessage: 'CI: Bump version to {{version}}',
-    pathToPackage: process.env.GITHUB_WORKSPACE!,
     major: ['BREAKING CHANGE', 'major'],
     minor: ['feature', 'minor'],
     patch: [''],
-    ref: 'main',
   };
 
+  // Mutated Inputs
+  const bumpInput = coreInput('bump');
+  const bump = /false/i.test(boolConvert(bumpInput)) ? false : bumpInput;
+
+  const majorInput = coreInput('major');
+  const major = (majorInput.length && [...defaults.major, ...majorInput.split(',')]) || defaults.major;
+
+  const minorInput = coreInput('minor');
+  const minor = (minorInput.length && [...defaults.minor, ...minorInput.split(',')]) || defaults.minor;
+
+  const patchInput = coreInput('patch');
+  const patch = (patchInput.length && [...defaults.patch, ...patchInput.split(',')]) || undefined;
+
+  const ref = coreInput('ref').split('/').pop();
+
+  // Non Mutated Inputs
   const token = coreInput('token', true);
-  const commitMessage = coreInput('commit_message') || defaults.commitMessage;
-  const pathToPackage = coreInput('path_to_package') || defaults.pathToPackage;
-  const major = (coreInput('major').length && [...defaults.major, ...coreInput('major').split(',')]) || defaults.major;
-  const minor = (coreInput('minor').length && [...defaults.minor, ...coreInput('minor').split(',')]) || defaults.minor;
-  const patch = (coreInput('patch').length && [...defaults.patch, ...coreInput('patch').split(',')]) || undefined;
+  const commitMessage = coreInput('commit_message');
+  const pathToPackage = coreInput('path_to_package');
   const tag = /true/i.test(coreInput('tag'));
-  const ref = coreInput('ref').split('/').pop() || defaults.ref;
-  const bump = /false/i.test(boolConvert(coreInput('bump'))) ? false : coreInput('bump');
 
   return {
     token,
