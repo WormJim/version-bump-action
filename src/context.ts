@@ -21,6 +21,10 @@ const boolConvert = (value: string) => {
   }
 };
 
+const coreInput = (input: string, required: boolean = false) => {
+  return core.getInput(input, { required });
+};
+
 export const getInputs = async (): Promise<Inputs> => {
   const defaults = {
     commitMessage: 'CI: Bump version to {{version}}',
@@ -32,15 +36,15 @@ export const getInputs = async (): Promise<Inputs> => {
   };
 
   return {
-    token: core.getInput('token', { required: true }),
-    commitMessage: core.getInput('commit_message') || defaults.commitMessage,
-    pathToPackage: core.getInput('path_to_package') || defaults.pathToPackage,
-    major: (core.getInput('major').length && [...defaults.major, ...core.getInput('major').split(',')]) || defaults.major,
-    minor: (core.getInput('minor').length && [...defaults.minor, ...core.getInput('minor').split(',')]) || defaults.minor,
-    patch: (core.getInput('patch').length && [...defaults.patch, ...core.getInput('patch').split(',')]) || undefined,
-    tag: /true/i.test(core.getInput('tag')),
-    ref: core.getInput('ref').split('/').pop() || defaults.ref,
-    bump: /false/i.test(boolConvert(core.getInput('bump'))) ? false : core.getInput('bump'),
+    token: coreInput('token', true),
+    commitMessage: coreInput('commit_message') || defaults.commitMessage,
+    pathToPackage: coreInput('path_to_package') || defaults.pathToPackage,
+    major: (coreInput('major').length && [...defaults.major, ...coreInput('major').split(',')]) || defaults.major,
+    minor: (coreInput('minor').length && [...defaults.minor, ...coreInput('minor').split(',')]) || defaults.minor,
+    patch: (coreInput('patch').length && [...defaults.patch, ...coreInput('patch').split(',')]) || undefined,
+    tag: /true/i.test(coreInput('tag')),
+    ref: coreInput('ref').split('/').pop() || defaults.ref,
+    bump: /false/i.test(boolConvert(coreInput('bump'))) ? false : coreInput('bump'),
   };
 };
 
