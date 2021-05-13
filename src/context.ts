@@ -32,7 +32,13 @@ export const getInputs = async (): Promise<Inputs> => {
     patch: [''],
   };
 
-  // Mutated Inputs
+  // Independant Inputs
+  const token = coreInput('token', true);
+  const commitMessage = coreInput('commit_message');
+  const pathToPackage = coreInput('path_to_package');
+  const tag = /true/i.test(coreInput('tag'));
+
+  // Dependant Inputs
   const bumpInput = coreInput('bump');
   const bump = /false/i.test(boolConvert(bumpInput)) ? false : bumpInput;
 
@@ -46,12 +52,6 @@ export const getInputs = async (): Promise<Inputs> => {
   const patch = (patchInput.length && [...defaults.patch, ...patchInput.split(',')]) || undefined;
 
   const ref = coreInput('ref').split('/').pop();
-
-  // Non Mutated Inputs
-  const token = coreInput('token', true);
-  const commitMessage = coreInput('commit_message');
-  const pathToPackage = coreInput('path_to_package');
-  const tag = /true/i.test(coreInput('tag'));
 
   return {
     token,
