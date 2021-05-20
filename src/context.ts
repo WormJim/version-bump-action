@@ -44,18 +44,10 @@ export const getInputs = async (): Promise<Inputs> => {
   const per = /true/i.test(coreInput('persist_phrase'));
 
   // Dependant Inputs
-  const bumpInput = coreInput('bump');
-  const bump = /false/i.test(boolConvert(bumpInput)) ? false : bumpInput;
-
-  const majorInput = coreInput('major');
-  const major = [...persist(per, defaults.major), ...majorInput.split(',')];
-
-  const minorInput = coreInput('minor');
-  const minor = [...persist(per, defaults.minor), ...minorInput.split(',')];
-
-  const patchInput = coreInput('patch');
-  const patch = [...persist(per, defaults.patch), ...patchInput.split(',')];
-
+  const bump = /false/i.test(boolConvert(coreInput('bump'))) ? false : coreInput('bump');
+  const major = [...persist(per, defaults.major), ...coreInput('major').split(',')];
+  const minor = [...persist(per, defaults.minor), ...coreInput('minor').split(',')];
+  const patch = [...persist(per, defaults.patch), ...coreInput('patch').split(',')];
   const ref = coreInput('ref').split('/').pop()!;
 
   return {
