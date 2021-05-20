@@ -21,26 +21,45 @@ const boolConvert = (value: string) => {
   }
 };
 
+const coreInput = (input: string, required: boolean = false) => {
+  return core.getInput(input, { required });
+};
+
+const persist = (per: boolean = false, def: string[]) => {
+  return (per && def) || [];
+};
+
 export const getInputs = async (): Promise<Inputs> => {
   const defaults = {
-    commitMessage: 'CI: Bump version to {{version}}',
-    pathToPackage: process.env.GITHUB_WORKSPACE!,
     major: ['BREAKING CHANGE', 'major'],
     minor: ['feature', 'minor'],
     patch: [''],
-    ref: 'main',
   };
 
+  // Independant Inputs
+  const token = coreInput('token', true);
+  const commitMessage = coreInput('commit_message');
+  const pathToPackage = coreInput('path_to_package');
+  const tag = /true/i.test(coreInput('tag'));
+  const per = /true/i.test(coreInput('persist_phrase'));
+
+  // Dependant Inputs
+  const bump = /false/i.test(boolConvert(coreInput('bump'))) ? false : coreInput('bump');
+  const major = [...persist(per, defaults.major), ...coreInput('major').split(',')];
+  const minor = [...persist(per, defaults.minor), ...coreInput('minor').split(',')];
+  const patch = [...persist(per, defaults.patch), ...coreInput('patch').split(',')];
+  const ref = coreInput('ref').split('/').pop()!;
+
   return {
-    token: core.getInput('token', { required: true }),
-    commitMessage: core.getInput('commit_message') || defaults.commitMessage,
-    pathToPackage: core.getInput('path_to_package') || defaults.pathToPackage,
-    major: (core.getInput('major').length && [...defaults.major, ...core.getInput('major').split(',')]) || defaults.major,
-    minor: (core.getInput('minor').length && [...defaults.minor, ...core.getInput('minor').split(',')]) || defaults.minor,
-    patch: (core.getInput('patch').length && [...defaults.patch, ...core.getInput('patch').split(',')]) || undefined,
-    tag: /true/i.test(core.getInput('tag')),
-    ref: core.getInput('ref').split('/').pop() || defaults.ref,
-    bump: /false/i.test(boolConvert(core.getInput('bump'))) ? false : core.getInput('bump'),
+    token,
+    commitMessage,
+    pathToPackage,
+    major,
+    minor,
+    patch,
+    tag,
+    ref,
+    bump,
   };
 };
 

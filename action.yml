@@ -46,6 +46,10 @@ inputs:
     description: (Optional) The target branch to push the version bump commit to.
     default: ${{ github.ref }}
     required: false
+  persist_phrase:
+    description: (Optional) Persist default phrases with custom phrases.
+    default: 'false'
+    required: false
 outputs:
   version:
     description: 'Version Bump'

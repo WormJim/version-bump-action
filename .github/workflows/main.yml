@@ -38,8 +38,8 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit_message: Bump version to {{version}}
-          minor: Feature, Feat, feat
-          patch: Patch, Fix
+          minor: Feature:, Feature/, feature:, feature/
+          patch: Patch:, Patch/, Fix:, Fix/
           # bump: ${{ contains(github.ref, 'releases/') && $(echo '${{ github.ref }}' | awk -F '/' '{print $NF}' ) }}
 
       - name:  'Output Step'
