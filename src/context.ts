@@ -25,7 +25,7 @@ const coreInput = (input: string, required: boolean = false) => {
   return core.getInput(input, { required });
 };
 
-const persist = (per: boolean, def: string[]) => {
+const persist = (per: boolean = false, def: string[]) => {
   return (per && def) || [];
 };
 
