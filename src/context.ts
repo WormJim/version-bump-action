@@ -10,6 +10,7 @@ export interface Inputs {
   patch: string[] | undefined;
   ref: string;
   bump: string | false;
+  release: boolean;
 }
 
 const boolConvert = (value: string) => {
@@ -42,6 +43,7 @@ export const getInputs = async (): Promise<Inputs> => {
   const pathToPackage = coreInput('path_to_package');
   const tag = /true/i.test(coreInput('tag'));
   const per = /true/i.test(coreInput('persist_phrase'));
+  const release = /true/i.test(coreInput('release'));
 
   // Dependant Inputs
   const bump = /false/i.test(boolConvert(coreInput('bump'))) ? false : coreInput('bump');
@@ -60,6 +62,7 @@ export const getInputs = async (): Promise<Inputs> => {
     tag,
     ref,
     bump,
+    release,
   };
 };
 
