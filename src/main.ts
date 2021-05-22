@@ -18,7 +18,10 @@ async function run(): Promise<void> {
       throw new Error(`${inputs.ref} does not match ${branch}`);
     }
 
+    core.startGroup('Head Commit On Base Ref');
     core.info(`Head Commit is: "${kit.headCommit}"`);
+    core.endGroup();
+
     if (kit.headIsBump) {
       // If this actions version bump commit activates a workflow
       // which calls this action again with the original action bump commit message
