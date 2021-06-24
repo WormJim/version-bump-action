@@ -66,15 +66,15 @@ export default class Versioned {
   public patchMatch = () => commitWordMatch(this._patchPhrases || []);
 
   // Accessor
-  get headIsBump() {
+  get headIsBump(): boolean {
     return this._versionRegExp.test(this._headCommit);
   }
 
-  get bumpVersion() {
+  get bumpVersion(): string | false {
     return this._bump;
   }
 
-  get headCommit() {
+  get headCommit(): string {
     return this._headCommit;
   }
 }
