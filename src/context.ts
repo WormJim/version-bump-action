@@ -45,9 +45,9 @@ export const getInputs = async (): Promise<Inputs> => {
 
   // Dependant Inputs
   const bump = /false/i.test(boolConvert(coreInput('bump'))) ? false : coreInput('bump');
-  const major = [...persist(per, defaults.major), ...coreInput('major').split(',')];
-  const minor = [...persist(per, defaults.minor), ...coreInput('minor').split(',')];
-  const patch = [...persist(per, defaults.patch), ...coreInput('patch').split(',')];
+  const major = [...persist(per, defaults.major), ...coreInput('major').split(', ')];
+  const minor = [...persist(per, defaults.minor), ...coreInput('minor').split(', ')];
+  const patch = [...persist(per, defaults.patch), ...coreInput('patch').split(', ')];
   const ref = coreInput('ref').split('/').pop()!;
 
   return {
