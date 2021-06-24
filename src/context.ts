@@ -29,6 +29,12 @@ const persist = (per: boolean = false, def: string[]) => {
   return (per && def) || [];
 };
 
+const trim = (value: string) => value.trim();
+
+const splitTrim = (value: string, del: string) => {
+  return value?.split(del)?.map(trim) || [''];
+};
+
 export const getInputs = async (): Promise<Inputs> => {
   const defaults = {
     major: ['BREAKING CHANGE', 'major'],
@@ -45,9 +51,9 @@ export const getInputs = async (): Promise<Inputs> => {
 
   // Dependant Inputs
   const bump = /false/i.test(boolConvert(coreInput('bump'))) ? false : coreInput('bump');
-  const major = [...persist(per, defaults.major), ...coreInput('major').split(', ')];
-  const minor = [...persist(per, defaults.minor), ...coreInput('minor').split(', ')];
-  const patch = [...persist(per, defaults.patch), ...coreInput('patch').split(', ')];
+  const major = [...persist(per, defaults.major), ...splitTrim(coreInput('major'), ',')];
+  const minor = [...persist(per, defaults.minor), ...splitTrim(coreInput('minor'), ',')];
+  const patch = [...persist(per, defaults.patch), ...splitTrim(coreInput('patch'), ',')];
   const ref = coreInput('ref').split('/').pop()!;
 
   return {
